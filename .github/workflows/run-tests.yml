@@ -1,0 +1,15 @@
+name: Run Tests
+
+on: [push]
+
+jobs:
+  test:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: rustup target add wasm32-unknown-unknown
+      
+      - run: cargo build --release
+      - run: cargo run_tests
