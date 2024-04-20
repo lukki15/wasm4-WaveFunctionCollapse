@@ -1,30 +1,35 @@
+#[cfg(test)]
+mod tests;
+
 #[cfg(feature = "buddy-alloc")]
 mod alloc;
+mod bitmap;
+mod palette;
 mod wasm4;
-use wasm4::*;
 
-#[rustfmt::skip]
-const SMILEY: [u8; 8] = [
-    0b11000011,
-    0b10000001,
-    0b00100100,
-    0b00100100,
-    0b00000000,
-    0b00100100,
-    0b10011001,
-    0b11000011,
-];
+use bitmap::*;
+
+#[no_mangle]
+fn start() {
+    palette::set_palette([0xbfe8f2, 0xb97a57, 0xfff200, 0x00aa00]);
+    palette::set_draw_colour(0x4203);
+}
 
 #[no_mangle]
 fn update() {
-    unsafe { *DRAW_COLORS = 2 }
-    text("Hello from Rust!", 10, 10);
+    wasm4::blit(&BITMAP, 76, 76, BITMAP_WIDTH, BITMAP_HEIGHT, BITMAP_FLAGS);
 
-    let gamepad = unsafe { *GAMEPAD1 };
-    if gamepad & BUTTON_1 != 0 {
-        unsafe { *DRAW_COLORS = 4 }
+    for x in 0..PATTERN_X {
+        for y in 0..PATTERN_Y {
+            let array = bitmap::get_pattern(x, y);
+            wasm4::blit(
+                &array,
+                (x * 2) * PATTERN_N,
+                (y * 2) * PATTERN_N,
+                PATTERN_N,
+                PATTERN_N,
+                BITMAP_FLAGS,
+            );
+        }
     }
-
-    blit(&SMILEY, 76, 76, 8, 8, BLIT_1BPP);
-    text("Press X to blink", 16, 90);
 }

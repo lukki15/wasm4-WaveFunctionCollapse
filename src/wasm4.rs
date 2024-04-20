@@ -51,8 +51,17 @@ pub const SYSTEM_HIDE_GAMEPAD_OVERLAY: u8 = 2;
 // └───────────────────────────────────────────────────────────────────────────┘
 
 /// Copies pixels to the framebuffer.
-pub fn blit(sprite: &[u8], x: i32, y: i32, width: u32, height: u32, flags: u32) {
-    unsafe { extern_blit(sprite.as_ptr(), x, y, width, height, flags) }
+pub fn blit(sprite: &[u8], x: usize, y: usize, width: usize, height: usize, flags: u32) {
+    unsafe {
+        extern_blit(
+            sprite.as_ptr(),
+            x.try_into().unwrap(),
+            y.try_into().unwrap(),
+            width.try_into().unwrap(),
+            height.try_into().unwrap(),
+            flags,
+        )
+    }
 }
 extern "C" {
     #[link_name = "blit"]
