@@ -17,7 +17,7 @@ pub const PATTERN_N: usize = 2;
 pub const PATTERN_X: usize = BITMAP_WIDTH / PATTERN_N;
 pub const PATTERN_Y: usize = BITMAP_HEIGHT / PATTERN_N;
 
-fn get_pixels(x: usize, y: usize) -> u8 {
+fn get_pixel(x: usize, y: usize) -> u8 {
     std::assert!(x < BITMAP_WIDTH, "x = {}", x);
     std::assert!(y < BITMAP_HEIGHT, "y = {}", y);
 
@@ -25,7 +25,10 @@ fn get_pixels(x: usize, y: usize) -> u8 {
     let byte_index = pixel / BITMAP_PIXELS_PER_BYTE;
     let byte_offset = pixel % BITMAP_PIXELS_PER_BYTE;
 
-    BITMAP[byte_index] << (BITMAP_BIT_PER_PIXEL * byte_offset)
+    const MASK: u8 = if BITMAP_BIT_PER_PIXEL == 1 {0b10000000} else {0b11000000};
+
+    let shifted_pixel = BITMAP[byte_index] << (BITMAP_BIT_PER_PIXEL * byte_offset);
+    shifted_pixel & MASK
 }
 
 const PATTERN_ARRAY_SIZE: usize =
@@ -41,24 +44,13 @@ pub fn get_pattern(x: usize, y: usize) -> PatternArray {
     let bitmap_y = y * PATTERN_N;
 
     for array_y in 0..PATTERN_N {
-        for array_x in (0..PATTERN_N).step_by(4) {
-            let mask_pixel = if PATTERN_N > 4 {
-                0xFF
-            } else {
-                0xFF << (2 * (4 - PATTERN_N))
-            };
+        for array_x in 0..PATTERN_N {
+            let index = array_y * PATTERN_N + array_x;
+            let byte_index = index / BITMAP_PIXELS_PER_BYTE;
+            let byte_offset = index % BITMAP_PIXELS_PER_BYTE;
 
-            let pixels_value = get_pixels(bitmap_x + array_x, bitmap_y + array_y);
-            let pixels = pixels_value & mask_pixel;
-
-            let array_index = array_y * PATTERN_N + array_x;
-            let byte_index = array_index / 4;
-
-            if PATTERN_N == 2 && array_y % 2 == 1 {
-                array[byte_index] |= pixels >> 4;
-            } else {
-                array[byte_index] = pixels;
-            }
+            let pixel = get_pixel(bitmap_x+array_x, bitmap_y+array_y);
+            array[byte_index] |= pixel >> (BITMAP_BIT_PER_PIXEL*byte_offset);
         }
     }
 
