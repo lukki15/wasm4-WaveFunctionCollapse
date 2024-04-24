@@ -32,40 +32,6 @@ const PATTERN_ARRAY_SIZE: usize =
     (PATTERN_N * PATTERN_N + (BITMAP_PIXELS_PER_BYTE - 1)) / BITMAP_PIXELS_PER_BYTE;
 type PatternArray = [u8; PATTERN_ARRAY_SIZE];
 
-pub fn _get_pattern2(x: usize, y: usize) -> PatternArray {
-    std::assert!(x < PATTERN_X);
-    std::assert!(y < PATTERN_Y);
-    let mut array: PatternArray = [0; PATTERN_ARRAY_SIZE];
-
-    let bitmap_x = x * PATTERN_N;
-    let bitmap_y = y * PATTERN_N;
-
-    for array_y in 0..PATTERN_N {
-        for array_x in (0..PATTERN_N).step_by(BITMAP_PIXELS_PER_BYTE) {
-            let mask_pixel = if PATTERN_N > BITMAP_PIXELS_PER_BYTE {
-                0xFF
-            } else {
-                const SHIFT: usize = BITMAP_BIT_PER_PIXEL * (BITMAP_PIXELS_PER_BYTE - PATTERN_N);
-                0xFF << SHIFT
-            };
-
-            let pixels_value = get_pixels(bitmap_x + array_x, bitmap_y + array_y);
-            let pixels = pixels_value & mask_pixel;
-
-            let array_index = array_y * PATTERN_N + array_x;
-            let byte_index = array_index / BITMAP_PIXELS_PER_BYTE;
-
-            if PATTERN_N == 2 && array_y % 2 == 1 {
-                array[byte_index] |= pixels >> BITMAP_PIXELS_PER_BYTE;
-            } else {
-                array[byte_index] = pixels;
-            }
-        }
-    }
-
-    array
-}
-
 pub fn get_pattern(x: usize, y: usize) -> PatternArray {
     std::assert!(x < PATTERN_X);
     std::assert!(y < PATTERN_Y);
