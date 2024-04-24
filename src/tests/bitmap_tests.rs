@@ -1,4 +1,5 @@
 use crate::bitmap::*;
+use crate::constants::*;
 
 #[test]
 fn first_pixel() {

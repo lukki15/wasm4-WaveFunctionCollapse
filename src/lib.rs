@@ -4,10 +4,11 @@ mod tests;
 #[cfg(feature = "buddy-alloc")]
 mod alloc;
 mod bitmap;
+mod constants;
 mod palette;
 mod wasm4;
 
-use bitmap::*;
+use constants::*;
 
 #[no_mangle]
 fn start() {
