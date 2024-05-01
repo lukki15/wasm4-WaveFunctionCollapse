@@ -40,7 +40,7 @@ fn pixel_by_piyel() {
     for y in 0..BITMAP_HEIGHT {
         for x in 0..BITMAP_WIDTH {
             let bitmap_pixel = get_bitmap_pixel(x, y);
-            let pattern_pixel = get_pattern_pixel(x,y);
+            let pattern_pixel = get_pattern_pixel(x, y);
             assert_eq!(pattern_pixel, bitmap_pixel);
         }
     }
