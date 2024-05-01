@@ -3,13 +3,13 @@ use crate::pattern::*;
 
 #[test]
 fn new() {
-    let array : PatternArray = [0; PATTERN_ARRAY_SIZE];
+    let array: PatternArray = [0; PATTERN_ARRAY_SIZE];
     let _pattern = Pattern::new(array);
 }
 
 #[test]
 fn find() {
-    let array_zero : PatternArray = [0; PATTERN_ARRAY_SIZE];
+    let array_zero: PatternArray = [0; PATTERN_ARRAY_SIZE];
     let array_one: PatternArray = [1; PATTERN_ARRAY_SIZE];
     let pattern_zero = Pattern::new(array_zero);
 
