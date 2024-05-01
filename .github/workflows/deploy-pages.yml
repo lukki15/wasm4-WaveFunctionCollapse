@@ -36,11 +36,11 @@ jobs:
       - uses: NiklasEi/wasm-opt-action@v2
         with:
           file: target/wasm32-unknown-unknown/release/cart.wasm
-          output: boids-cart-opt.wasm
+          output: cart-opt.wasm
           options: -Oz --strip-dwarf --strip-producers --zero-filled-memory
 
       - run: npm install -g wasm4
-      - run: w4 bundle boids-cart-opt.wasm --title "wasm-4 boids" --html dist/index.html
+      - run: w4 bundle cart-opt.wasm --title "${{ github.event.repository.name }}" --html dist/index.html
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
