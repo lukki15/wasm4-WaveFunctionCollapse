@@ -16,7 +16,7 @@ pub const BITMAP: [u8; BITMAP_SIZE] = [
     0x5d, 0x55, 0x5a, 0xaa, 0xba, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
 ];
 
-pub const PATTERN_N: usize = 3;
+pub const PATTERN_N: usize = 1;
 pub const PATTERN_X: usize = BITMAP_WIDTH / PATTERN_N;
 pub const PATTERN_Y: usize = BITMAP_HEIGHT / PATTERN_N;
 

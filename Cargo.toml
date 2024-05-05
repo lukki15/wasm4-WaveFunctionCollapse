@@ -8,6 +8,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
+bit-set = "0.5.3"
 buddy-alloc = { version = "0.4.1", optional = true }
 lazy_static = "1.4.0"
 

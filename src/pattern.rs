@@ -94,4 +94,8 @@ impl Pattern {
             .iter()
             .position(|pattern| pattern.array == pattern_array)
     }
+
+    pub fn get_array(&self) -> &PatternArray {
+        return &self.array;
+    }
 }

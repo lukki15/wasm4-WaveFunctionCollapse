@@ -8,7 +8,7 @@ fn all_patterns() {
         for y in 0..generator::PATTERN_SIZE {
             assert_eq!(generator.grid[x][y].len(), generator.patterns.len());
             for i in 0..generator.patterns.len() {
-                assert!(generator.grid[x][y].contains(&i));
+                assert!(generator.grid[x][y].contains(i));
             }
         }
     }
@@ -23,7 +23,7 @@ fn borders() {
         for y in 1..generator::PATTERN_SIZE - 1 {
             assert_eq!(generator.grid[x][y].len(), generator.patterns.len());
             for i in 0..generator.patterns.len() {
-                assert!(generator.grid[x][y].contains(&i));
+                assert!(generator.grid[x][y].contains(i));
             }
         }
     }
@@ -33,14 +33,14 @@ fn borders() {
             {
                 const Y: usize = 0;
                 assert_eq!(
-                    generator.grid[x][Y].contains(&i),
+                    generator.grid[x][Y].contains(i),
                     generator.patterns[i].get_top_border()
                 );
             }
             {
                 const Y: usize = generator::PATTERN_SIZE - 1;
                 assert_eq!(
-                    generator.grid[x][Y].contains(&i),
+                    generator.grid[x][Y].contains(i),
                     generator.patterns[i].get_bottom_border()
                 );
             }
@@ -49,35 +49,35 @@ fn borders() {
             {
                 const X: usize = 0;
                 assert_eq!(
-                    generator.grid[X][y].contains(&i),
+                    generator.grid[X][y].contains(i),
                     generator.patterns[i].get_left_border()
                 );
             }
             {
                 const X: usize = generator::PATTERN_SIZE - 1;
                 assert_eq!(
-                    generator.grid[X][y].contains(&i),
+                    generator.grid[X][y].contains(i),
                     generator.patterns[i].get_right_border()
                 );
             }
         }
         {
             assert_eq!(
-                generator.grid[0][0].contains(&i),
+                generator.grid[0][0].contains(i),
                 generator.patterns[i].get_top_border() && generator.patterns[i].get_left_border()
             );
             assert_eq!(
-                generator.grid[0][generator::PATTERN_SIZE - 1].contains(&i),
+                generator.grid[generator::PATTERN_SIZE - 1][0].contains(i),
                 generator.patterns[i].get_top_border() && generator.patterns[i].get_right_border()
             );
             assert_eq!(
-                generator.grid[generator::PATTERN_SIZE - 1][0].contains(&i),
+                generator.grid[0][generator::PATTERN_SIZE - 1].contains(i),
                 generator.patterns[i].get_bottom_border()
                     && generator.patterns[i].get_left_border()
             );
             assert_eq!(
                 generator.grid[generator::PATTERN_SIZE - 1][generator::PATTERN_SIZE - 1]
-                    .contains(&i),
+                    .contains(i),
                 generator.patterns[i].get_bottom_border()
                     && generator.patterns[i].get_right_border()
             );
