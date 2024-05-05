@@ -4,11 +4,11 @@ use crate::pattern;
 use crate::wasm4;
 use std::collections::BTreeSet;
 
-const PATTERN_SIZE: usize = wasm4::SCREEN_SIZE / PATTERN_N;
+pub const PATTERN_SIZE: usize = wasm4::SCREEN_SIZE / PATTERN_N;
 
 pub struct Generator {
-    patterns: Vec<pattern::Pattern>,
-    grid: [[BTreeSet<usize>; PATTERN_SIZE]; PATTERN_SIZE],
+    pub patterns: Vec<pattern::Pattern>,
+    pub grid: [[BTreeSet<usize>; PATTERN_SIZE]; PATTERN_SIZE],
 }
 
 impl Generator {
@@ -32,7 +32,7 @@ impl Generator {
     pub fn init_borders(&mut self) {
         for pattern_index in 0..self.patterns.len() {
             let pattern = &self.patterns[pattern_index];
-            for x in 0..PATTERN_SIZE {
+            for x in 1..PATTERN_SIZE - 1 {
                 {
                     // top
                     const Y: usize = 0;
@@ -48,7 +48,7 @@ impl Generator {
                     }
                 }
             }
-            for y in 0..PATTERN_SIZE {
+            for y in 1..PATTERN_SIZE - 1 {
                 {
                     // left
                     const X: usize = 0;
@@ -63,6 +63,19 @@ impl Generator {
                         self.grid[X][y].remove(&pattern_index);
                     }
                 }
+            }
+
+            if !pattern.get_top_border() || !pattern.get_left_border() {
+                self.grid[0][0].remove(&pattern_index);
+            }
+            if !pattern.get_top_border() || !pattern.get_right_border() {
+                self.grid[0][PATTERN_SIZE - 1].remove(&pattern_index);
+            }
+            if !pattern.get_bottom_border() || !pattern.get_left_border() {
+                self.grid[PATTERN_SIZE - 1][0].remove(&pattern_index);
+            }
+            if !pattern.get_bottom_border() || !pattern.get_right_border() {
+                self.grid[PATTERN_SIZE - 1][PATTERN_SIZE - 1].remove(&pattern_index);
             }
         }
     }
